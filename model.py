@@ -629,8 +629,27 @@ def cross_entropy_loss(probs, targets):
     return -1*log_probs.mean()
     pass
 
-# Step 66 - derive_dlogits_on_paper (not yet solved)
-# TODO: implement
+# Step 66 - derive_dlogits_on_paper
+def derive_dlogits_on_paper():
+    """Return a string summarizing the derivation of dL/dlogits for mean cross-entropy."""
+    # TODO: return a short written derivation ending in dL/dlogits = (probs - onehot(targets)) / B
+    notes = """
+    The log likelihood loss is defined as follows, using the definition for 'softmax' as $softmax = e^{z_{ij}}/\sum_{k}e^{z_{ik}}:
+    $$L = -\frac{1}{B}\sum_{i=1}^{B}log(p_{i,y_{i}})=\sum_{i=1}^{B}log(\frac{e^{z_{i,y_{i}}}}{\sum_{k}e^{z_{ij}}})$$
+    We know the algebraic property of $log(a/b) = log(a) - log(b):
+    $$L = -\frac{1}{B}\sum_{i=1}^{B}(log{e^{z_{i,y_{i}}}} - log{\sum_{k}e^{z_{ij}}})=-\frac{1}{B}\sum_{i=1}^{B}(z_{i,y_{i}} - log{\sum_{k}e^{z_{ij}}})$$
+    Taking the derivative with respect to the logit
+    $$dL/dlogits = -\frac{1}{B}\frac{\partial}{\partial z_{nm}}\sum_{i=1}^{B}(z_{i,y_{i}} - log{\sum_{k}e^{z_{ij}}})$$
+    This becomes
+    $$dL/dlogits = -\frac{1}{B}\frac{\partial}{\partial z_{nm}}\sum_{i=1}^{B}(\delta_{in}z_{y_{i},m} - \frac{\sum_{k}\delta_{in}\delta{km}e^{z_{ij}}}{\sum_{k}e^{z_{ij}}})$$
+    Using properties of the dirac delta:
+    $$dL/dlogits = -(\delta_{y_{n},m}-p_{nm})/B = (p_{nm}-\delta_{y_{n},m})/B$$
+    In which $p_{nm}$ is our `probs` matrix and $\delta_{y_{n},m}$ is simply `onehot(targets)`. So we finally have the anser for 'dL/dlogits':
+
+    `dL/dlogits = (probs - onehot(targets)) / B`
+    """
+    return notes
+    pass
 
 # Step 67 - compute_dlogits (not yet solved)
 # TODO: implement
