@@ -676,9 +676,6 @@ def compute_dw_scatter_add(ids, dlogits, vocab_size):
     # TODO: build a (vocab_size, vocab_size) dW and accumulate dlogits[b] into row ids[b].
     dW = np.zeros((vocab_size, dlogits.shape[1]))
     np.add.at(dW,ids,dlogits)
-    # for b in range(len(ids)):
-    #     # np.add.at(dW,)
-    #     dW[ids[b],...] += dlogits[b,...]
     return dW
     pass
 
